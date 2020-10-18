@@ -23,31 +23,31 @@ tau =[]# 1st componeent
 for i  in range (0,m):
       tau.append([random.uniform(1,1000),random.uniform(1000,2000),random.uniform(2000,3000)])
 
-Theta = [] #2nd component
-Theta.append(random.uniform(1,500))
-Theta.append(random.uniform(2500,2000))
-Theta.append(1)
-Phi=[]#3rd component
+theta = [] #2nd component
+theta.append(random.uniform(1,500))
+theta.append(random.uniform(2500,2000))
+theta.append(1)
+phi=[]#3rd component
 for i in range(0,3):
       r=[]
-      Phi.append([])
+      phi.append([])
       for j in range (0,m):
             r.append(random.uniform(1,100))
-      Phi[i].append(tau[0][0]*tau[0][2]*Theta[i] + tau[0][1]*r[m-1] + tau[0][0]*(r[0] - r[m-2]))
+      phi[i].append(tau[0][0]*tau[0][2]*theta[i] + tau[0][1]*r[m-1] + tau[0][0]*(r[0] - r[m-2]))
       for k in range(1,m-1):
-            Phi[i].append(tau[k][0]*tau[k][2]*Theta[i] + tau[k][1]*r[m-1] + tau[k][0]*(r[k]-r[k-1]))
+            phi[i].append(tau[k][0]*tau[k][2]*theta[i] + tau[k][1]*r[m-1] + tau[k][0]*(r[k]-r[k-1]))
 
-      Phi[i].append( (tau[m-1][0] + tau[m-1][1] + tau[m-1][2]) * r[m-1])
+      phi[i].append( (tau[m-1][0] + tau[m-1][1] + tau[m-1][2]) * r[m-1])
 
 
 #Encryption
 ru1 = random.uniform(5000,10000)
 ru2 = random.uniform(10000,15000) 
-def Enc(Phi,v,ru1,ru2):
-      ru3 = v - ru1*Theta[0] - ru2*Theta[1]
+def Enc(phi,v,ru1,ru2):
+      ru3 = v - ru1*theta[0] - ru2*theta[1]
       E=[]
       for i in range (0,m):
-            E.append(ru1*Phi[0][i] + ru2*Phi[1][i] + ru3*Phi[2][i])
+            E.append(ru1*phi[0][i] + ru2*phi[1][i] + ru3*phi[2][i])
       return E
       
 
@@ -130,37 +130,37 @@ def data_owner(file_obj):
         line_d = list(line)
         line[0] = float(line[0])
         line_d[0] = float(line[0])
-        line_d[0] =Enc(Phi,line_d[0],ru1,ru2)
+        line_d[0] =Enc(phi,line_d[0],ru1,ru2)
         for i in range (4,41):
               line[i] = float(line[i])
               line_d[i] = float(line[i])
-              line_d[i] = Enc(Phi,line_d[i],ru1,ru2)
+              line_d[i] = Enc(phi,line_d[i],ru1,ru2)
         if line[1] in list(d1.keys()):
               line[1] = d1[line[1] ]
               line_d[1] = line[1]
-              line_d[1] = Enc(Phi,line_d[1],ru1,ru2)
+              line_d[1] = Enc(phi,line_d[1],ru1,ru2)
         else:
               d1[line[1]] = count1
               line[1] = count1
-              line_d[1] = Enc(Phi,count1,ru1,ru2)              
+              line_d[1] = Enc(phi,count1,ru1,ru2)              
               count1 = count1  + 1
         if line[2] in list(d2.keys()):
               line[2] = d2[line[2] ]
               line_d[2] = line[2]
-              line_d[2] = Enc(Phi,line_d[2],ru1,ru2)
+              line_d[2] = Enc(phi,line_d[2],ru1,ru2)
         else:
               d2[line[2]] = count2
               line[2] = count2
-              line_d[2] = Enc(Phi,count2,ru1,ru2)
+              line_d[2] = Enc(phi,count2,ru1,ru2)
               count2 = count2  + 1
         if line[3] in list(d3.keys()):
               line[3] = d3[line[3] ]
               line_d[3] = line[3]
-              line_d[3] = Enc(Phi,line_d[3],ru1,ru2)
+              line_d[3] = Enc(phi,line_d[3],ru1,ru2)
         else:
               d3[line[3]] = count3
               line[3] = count3
-              line_d[3] = Enc(Phi,count3,ru1,ru2)
+              line_d[3] = Enc(phi,count3,ru1,ru2)
               count3 = count3  + 1
         eds.append(line_d)
         writer.writerow(line)
